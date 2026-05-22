@@ -10,50 +10,6 @@
             box-sizing: border-box;
         }
 
-
-
-
-
-
-<label class="theme-switch">
-    <input type="checkbox" id="theme-toggle">
-    <span class="slider"></span>
-</label>
-
-
-
-
-        /* Тёмная тема */
-body.dark {
-    background: #1a1a1a;
-    color: #e0e0e0;
-}
-body.dark .news,
-body.dark .main-content {
-    background: #2a2a2a;
-    border-color: #444;
-}
-/* Кнопка-переключатель (стилизуй как хочешь) */
-.theme-switch {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-}
-
-        const toggle = document.getElementById('theme-toggle');
-const currentTheme = localStorage.getItem('theme');
-
-if (currentTheme === 'dark') document.body.classList.add('dark');
-toggle.addEventListener('change', (e) => {
-    if (e.target.checked) {
-        document.body.classList.add('dark');
-        localStorage.setItem('theme', 'dark');
-    } else {
-        document.body.classList.remove('dark');
-        localStorage.setItem('theme', 'light');
-    }
-});
-        
         body {
             background: #faf9f8;
             font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
