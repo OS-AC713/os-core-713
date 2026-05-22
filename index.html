@@ -297,13 +297,43 @@
         .menu-btn:hover {
             background: #ffffff;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            /* ЛОГОТИП НАД ЗАГОЛОВКОМ */
+.logo-wrapper {
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+
+.rotating-logo {
+    width: 80px;
+    height: auto;
+    animation: spinOnce 5s ease-out forwards;
+    display: inline-block;
+}
+
+@keyframes spinOnce {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Если хочешь вращение при наведении — раскомментируй:
+.rotating-logo:hover {
+    animation: spinOnce 0.8s ease-out;
+}
+*/
+
+/* Адаптация для мобильных */
+@media (max-width: 750px) {
+    .rotating-logo {
+        width: 60px;
+    }
+}
         }
     </style>
 </head>
 <body>
 
     <button class="menu-btn" id="menuBtn">☰ Меню</button>
-
+    <img src="logo.png" alt="CORE/713" class="logo-img">
     <div class="sidebar" id="sidebar">
         <h3>Навигация</h3>
         <nav>
@@ -351,7 +381,11 @@
 
         <!-- ПРАВАЯ КОЛОНКА: ОСНОВНОЙ КОНТЕНТ -->
         <div class="main-content">
-            <h1>CORE/713</h1>
+            <div class="logo-wrapper">
+    <img src="logo.png" alt="CORE/713" class="rotating-logo">
+</div>
+<h1>CORE/713</h1>
+            
             <div class="status">Официальный сайт Операционной Системы</div>
             <p>Проект находится в активной разработке. Следите за обновлениями.</p>
 
