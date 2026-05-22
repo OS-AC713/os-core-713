@@ -18,6 +18,76 @@
             overflow-x: hidden;
         }
 
+        /* КОНТЕЙНЕР ДЛЯ ЦИЛИНДРИЧЕСКОЙ ЛЕНТЫ */
+        .news-cylinder {
+            position: relative;
+            perspective: 800px;
+            width: 100%;
+            max-width: 500px;
+            height: 450px;
+            margin: 1rem auto;
+            overflow-y: auto;
+            overflow-x: visible;
+            scroll-snap-type: y mandatory;
+            border-radius: 24px;
+            background: transparent;
+            scrollbar-width: thin;
+        }
+        .news-cylinder::-webkit-scrollbar {
+            width: 5px;
+        }
+        .news-cylinder::-webkit-scrollbar-track {
+            background: #e0e0e0;
+            border-radius: 10px;
+        }
+        .news-cylinder::-webkit-scrollbar-thumb {
+            background: #007acc;
+            border-radius: 10px;
+        }
+
+        /* КОНТЕЙНЕР ДЛЯ ВСЕХ НОВОСТЕЙ (БУДЕТ ВРАЩАТЬСЯ) */
+        .cylinder-items {
+            position: relative;
+            width: 100%;
+            min-height: 600px;
+            transform-style: preserve-3d;
+            transition: transform 0.05s linear; /* Плавная прокрутка */
+            will-change: transform;
+        }
+
+        /* КАЖДАЯ НОВОСТЬ */
+        .news-card {
+            position: absolute;
+            left: 10%;
+            width: 80%;
+            background: white;
+            padding: 1rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            text-align: center;
+            backdrop-filter: blur(2px);
+            scroll-snap-align: start;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: 1px solid #f0f0f0;
+        }
+
+        .news-card .date {
+            font-weight: bold;
+            color: #007acc;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        /* ЦЕНТРАЛЬНЫЙ ЭЛЕМЕНТ (АКТИВНЫЙ) */
+        .news-card.active {
+            box-shadow: 0 12px 28px rgba(0,0,0,0.15);
+            border-left: 4px solid #007acc;
+            transform: scale(1.02);
+            background: #ffffff;
+        }
+
+        /* ОСТАЛЬНЫЕ СТИЛИ (ПРАВАЯ КОЛОНКА, МЕНЮ) */
         .container {
             display: flex;
             max-width: 1200px;
@@ -25,71 +95,6 @@
             gap: 2rem;
             padding: 0 2rem;
         }
-
-        /* ЛЕВАЯ КОЛОНКА: ИЗОГНУТАЯ ЛЕНТА С ПРОКРУТКОЙ */
-        .news-ribbon {
-            flex: 1.2;
-            perspective: 1000px;
-            height: 500px;
-            overflow-y: auto;
-            overflow-x: hidden;
-            border-radius: 24px;
-            scroll-snap-type: y mandatory;
-            scrollbar-width: thin;
-            /* Скрываем стандартную полосу прокрутки */
-        }
-        .news-ribbon::-webkit-scrollbar {
-            width: 5px;
-        }
-        .news-ribbon::-webkit-scrollbar-track {
-            background: #e0e0e0;
-            border-radius: 10px;
-        }
-        .news-ribbon::-webkit-scrollbar-thumb {
-            background: #007acc;
-            border-radius: 10px;
-        }
-
-        /* 3D-КОНТЕЙНЕР ДЛЯ ИЗОГНУТОСТИ */
-        .ribbon-3d {
-            position: relative;
-            width: 100%;
-            min-height: 800px; /* чтобы хватило места для всех новостей */
-            transform-style: preserve-3d;
-            transform: rotateX(4deg) rotateY(-3deg);
-        }
-
-        /* КАЖДАЯ НОВОСТЬ — АБСОЛЮТНО ПОЗИЦИОНИРОВАНА */
-        .ribbon-item {
-            position: absolute;
-            left: 5%;
-            width: 90%;
-            background: white;
-            padding: 1rem;
-            border-radius: 20px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-            text-align: center;
-            transition: all 0.2s ease;
-            scroll-snap-align: start;
-            backdrop-filter: blur(2px);
-        }
-        .ribbon-item .date {
-            font-weight: bold;
-            color: #007acc;
-            display: block;
-            margin-bottom: 0.5rem;
-        }
-
-        /* Позиционирование новостей (как в изогнутой ленте) */
-        .item-0 { top: 5%; opacity: 0.3; transform: translateZ(-30px) scale(0.9); background: #ddd; }
-        .item-1 { top: 18%; opacity: 0.5; transform: translateZ(-15px) scale(0.95); background: #e8e8e8; }
-        .item-2 { top: 32%; opacity: 0.8; transform: translateZ(-5px) scale(0.98); background: #f5f5f5; }
-        .item-3 { top: 46%; opacity: 1; transform: translateZ(10px) scale(1.02); background: white; border-left: 4px solid #007acc; }
-        .item-4 { top: 60%; opacity: 0.8; transform: translateZ(-5px) scale(0.98); background: #f5f5f5; }
-        .item-5 { top: 74%; opacity: 0.5; transform: translateZ(-15px) scale(0.95); background: #e8e8e8; }
-        .item-6 { top: 88%; opacity: 0.3; transform: translateZ(-30px) scale(0.9); background: #ddd; }
-
-        /* ПРАВАЯ КОЛОНКА */
         .main-content {
             flex: 2;
         }
@@ -142,15 +147,6 @@
         }
         a:hover {
             text-decoration: underline;
-        }
-
-        @media (max-width: 750px) {
-            .container {
-                flex-direction: column;
-            }
-            .news-ribbon {
-                height: 400px;
-            }
         }
 
         /* БОКОВОЕ МЕНЮ */
@@ -211,6 +207,12 @@
             background: #ffffff;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
+
+        @media (max-width: 750px) {
+            .container {
+                flex-direction: column;
+            }
+        }
     </style>
 </head>
 <body>
@@ -228,33 +230,33 @@
     </div>
 
     <div class="container">
-        <!-- ЛЕВАЯ КОЛОНКА: ИЗОГНУТАЯ ЛЕНТА -->
-        <div class="news-ribbon" id="newsRibbon">
-            <div class="ribbon-3d" id="ribbon3d">
-                <div class="ribbon-item item-0">
-                    <div class="date">🕶️ «Не смотри в будущее, Декстер.»</div>
+        <!-- ЛЕВАЯ КОЛОНКА: ЦИЛИНДРИЧЕСКАЯ ЛЕНТА -->
+        <div class="news-cylinder" id="newsCylinder">
+            <div class="cylinder-items" id="cylinderItems">
+                <div class="news-card" data-index="0">
+                    <div class="date">«Не смотри в будущее, Декстер. Я всегда слежу за тобой..»</div>
                 </div>
-                <div class="ribbon-item item-1">
+                <div class="news-card" data-index="1">
                     <div class="date">Планы</div>
                     Дорожная карта, первый ISO.
                 </div>
-                <div class="ribbon-item item-2">
+                <div class="news-card" data-index="2">
                     <div class="date">Скоро</div>
                     Альфа-версия терминала.
                 </div>
-                <div class="ribbon-item item-3">
+                <div class="news-card" data-index="3">
                     <div class="date">2026-05-23</div>
                     Сайт обновлён: добавлена 3D-лента новостей с прокруткой.
                 </div>
-                <div class="ribbon-item item-4">
+                <div class="news-card" data-index="4">
                     <div class="date">2026-05-23</div>
                     Создан официальный сайт CORE/713. Добавлены форум и документация.
                 </div>
-                <div class="ribbon-item item-5">
+                <div class="news-card" data-index="5">
                     <div class="date">2026-05-22</div>
                     Проект CORE/713 официально запущен. Лицензия Apache 2.0.
                 </div>
-                <div class="ribbon-item item-6">
+                <div class="news-card" data-index="6">
                     <div class="date">Архив</div>
                     Основан репозиторий. Начало разработки.
                 </div>
@@ -278,43 +280,119 @@
     </div>
 
     <script>
-        const ribbonContainer = document.getElementById('newsRibbon');
-        const items = document.querySelectorAll('.ribbon-item');
+        (function() {
+            const container = document.getElementById('newsCylinder');
+            const itemsContainer = document.getElementById('cylinderItems');
+            const cards = document.querySelectorAll('.news-card');
 
-        function updateActiveItem() {
-            if (!ribbonContainer) return;
-            const containerRect = ribbonContainer.getBoundingClientRect();
-            const containerCenter = containerRect.top + containerRect.height / 2;
+            if (!container || !itemsContainer || cards.length === 0) return;
 
-            let closestItem = null;
-            let minDistance = Infinity;
+            // === НАСТРОЙКИ ЦИЛИНДРА ===
+            const radius = 220;          // Радиус цилиндра (чем больше, тем плавнее изгиб)
+            const angleStep = 360 / cards.length; // Угол между новостями (в градусах)
+            
+            // 1. РАССТАВЛЯЕМ КАРТОЧКИ НА ЦИЛИНДРЕ
+            cards.forEach((card, idx) => {
+                const angle = idx * angleStep; // градусы
+                const rad = (angle * Math.PI) / 180;
+                const x = Math.sin(rad) * radius;   // смещение по X (влево/вправо)
+                const z = Math.cos(rad) * radius;    // глубина
+                // Разные оттенки и масштабы для дальних элементов
+                const scale = 1 - (Math.abs(z) / (radius * 2));
+                const opacity = 1 - (Math.abs(z) / (radius * 1.5));
+                
+                card.style.transform = `translateX(${x}px) translateZ(${z}px) scale(${Math.max(0.6, scale)})`;
+                card.style.opacity = Math.max(0.4, opacity);
+                card.style.zIndex = Math.floor(100 + (radius - Math.abs(z)) / 5);
+            });
 
-            items.forEach(item => {
-                const rect = item.getBoundingClientRect();
-                const itemCenter = rect.top + rect.height / 2;
-                const distance = Math.abs(containerCenter - itemCenter);
-                if (distance < minDistance) {
-                    minDistance = distance;
-                    closestItem = item;
+            // 2. ФУНКЦИЯ ОБНОВЛЕНИЯ ПОЛОЖЕНИЯ ЦИЛИНДРА ПРИ ПРОКРУТКЕ
+            let currentRotation = 0;
+            let scrollTimeout = null;
+
+            function updateCylinderRotation() {
+                if (!container || !itemsContainer) return;
+                const scrollPercent = container.scrollTop / (container.scrollHeight - container.clientHeight);
+                // Вращаем цилиндр: от 0 до 360 градусов (можно и больше, но для круга хватит)
+                const targetRotation = scrollPercent * 360;
+                currentRotation = targetRotation;
+                itemsContainer.style.transform = `rotateX(8deg) rotateY(${targetRotation}deg) translateZ(-80px)`;
+                highlightActiveCard();
+            }
+
+            // 3. ПОДСВЕТКА АКТИВНОЙ (ЦЕНТРАЛЬНОЙ) НОВОСТИ
+            function highlightActiveCard() {
+                if (!container) return;
+                const containerRect = container.getBoundingClientRect();
+                const containerCenter = containerRect.top + containerRect.height / 2;
+                let closestCard = null;
+                let minDistance = Infinity;
+
+                cards.forEach(card => {
+                    const rect = card.getBoundingClientRect();
+                    const cardCenter = rect.top + rect.height / 2;
+                    const distance = Math.abs(containerCenter - cardCenter);
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        closestCard = card;
+                    }
+                });
+
+                cards.forEach(c => c.classList.remove('active'));
+                if (closestCard) closestCard.classList.add('active');
+            }
+
+            // 4. ПЛАВНАЯ ПРОКРУТКА (ИСПОЛЬЗУЕМ REQUESTANIMATIONFRAME)
+            let ticking = false;
+            container.addEventListener('scroll', () => {
+                if (!ticking) {
+                    requestAnimationFrame(() => {
+                        updateCylinderRotation();
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+                // Подсветка активного элемента также при прокрутке
+                if (scrollTimeout) clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(highlightActiveCard, 50);
+            });
+
+            // 5. ПРИ КЛИКЕ НА НОВОСТЬ — ПРОКРУЧИВАЕМ К НЕЙ (для удобства)
+            cards.forEach((card, idx) => {
+                card.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    // Прокручиваем контейнер так, чтобы эта новость оказалась примерно по центру
+                    const containerRect = container.getBoundingClientRect();
+                    const cardRect = card.getBoundingClientRect();
+                    const offset = cardRect.top - containerRect.top - (containerRect.height / 2) + (cardRect.height / 2);
+                    container.scrollBy({ top: offset, behavior: 'smooth' });
+                });
+            });
+
+            // ИНИЦИАЛИЗАЦИЯ
+            updateCylinderRotation();
+            highlightActiveCard();
+            // При изменении размера окна пересчитываем активный элемент
+            window.addEventListener('resize', () => {
+                highlightActiveCard();
+                updateCylinderRotation();
+            });
+        })();
+    </script>
+
+    <!-- МЕНЮ (НЕ МЕНЯЕТСЯ) -->
+    <script>
+        const menuBtn = document.getElementById('menuBtn');
+        const sidebar = document.getElementById('sidebar');
+        if (menuBtn && sidebar) {
+            menuBtn.addEventListener('click', () => {
+                sidebar.classList.toggle('open');
+            });
+            document.addEventListener('click', (e) => {
+                if (!sidebar.contains(e.target) && !menuBtn.contains(e.target) && sidebar.classList.contains('open')) {
+                    sidebar.classList.remove('open');
                 }
             });
-
-            // Сбрасываем стили у всех
-            items.forEach(item => {
-                item.classList.remove('active');
-            });
-
-            // Добавляем класс активной новости
-            if (closestItem) {
-                closestItem.classList.add('active');
-                // Чтобы активная новость была по центру, если нужно (опционально)
-                // closestItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }
-        }
-
-        if (ribbonContainer) {
-            ribbonContainer.addEventListener('scroll', updateActiveItem);
-            updateActiveItem();
         }
     </script>
 </body>
