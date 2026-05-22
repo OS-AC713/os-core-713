@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>CORE/713 — официальный сайт</title>
+    <title>CORE/713 — изогнутая лента</title>
     <style>
         * {
             margin: 0;
@@ -18,7 +18,6 @@
             overflow-x: hidden;
         }
 
-        /* ГЛАВНЫЙ КОНТЕЙНЕР */
         .container {
             display: flex;
             max-width: 1200px;
@@ -27,51 +26,68 @@
             padding: 0 2rem;
         }
 
-        /* ЛЕНТА НОВОСТЕЙ (ПРОСТАЯ И ЭЛЕГАНТНАЯ) */
-        .news-ribbon {
+        /* ИЗОГНУТАЯ ЛЕНТА (ЧЕК) */
+        .curved-ribbon {
             flex: 1.2;
-            background: #ffffff;
-            border-radius: 32px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.05);
-            overflow-y: auto;
-            overflow-x: hidden;
+            background: transparent;
             height: 550px;
-            padding: 1rem;
-            scroll-behavior: smooth;
-            border: 1px solid rgba(0,0,0,0.05);
+            overflow-y: auto;
+            overflow-x: visible;
+            perspective: 800px;
+            scrollbar-width: thin;
+            border-radius: 20px;
         }
 
-        .news-ribbon::-webkit-scrollbar {
-            width: 4px;
+        .curved-ribbon::-webkit-scrollbar {
+            width: 5px;
         }
-
-        .news-ribbon::-webkit-scrollbar-track {
-            background: #eaeaea;
+        .curved-ribbon::-webkit-scrollbar-track {
+            background: #e0e0e0;
             border-radius: 10px;
         }
-
-        .news-ribbon::-webkit-scrollbar-thumb {
+        .curved-ribbon::-webkit-scrollbar-thumb {
             background: #007acc;
             border-radius: 10px;
         }
 
-        /* КАЖДАЯ НОВОСТЬ */
-        .news-item {
-            background: #ffffff;
-            border-radius: 24px;
-            padding: 1.2rem;
-            margin-bottom: 1rem;
-            transition: all 0.2s ease;
-            border: 1px solid #f0f0f0;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
-            transform: translateX(0) scale(1);
+        /* КОНТЕЙНЕР С ИЗОГНУТЫМИ НОВОСТЯМИ */
+        .ribbon-curve {
+            position: relative;
+            width: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.05s linear;
         }
 
-        /* ЛЁГКАЯ ИЗОГНУТОСТЬ ПРИ НАВЕДЕНИИ */
-        .news-item:hover {
-            transform: translateX(4px) scale(1.01);
+        .news-card {
+            position: relative;
+            width: 90%;
+            margin: 1rem auto;
+            background: white;
+            border-radius: 24px;
+            padding: 1rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            transition: all 0.2s ease;
+            border: 1px solid #f0f0f0;
+            transform-origin: center;
+            scroll-snap-align: start;
+        }
+
+        /* ИЗОГНУТОСТЬ: КАЖДАЯ КАРТОЧКА ПОВЁРНУТА ВОКРУГ ОСИ X И Y */
+        .news-card[data-curve="0"] { transform: rotateX(2deg) rotateY(-1deg) translateY(0px); }
+        .news-card[data-curve="1"] { transform: rotateX(1deg) rotateY(-2deg) translateY(-4px); }
+        .news-card[data-curve="2"] { transform: rotateX(0deg) rotateY(-2deg) translateY(-8px); }
+        .news-card[data-curve="3"] { transform: rotateX(-1deg) rotateY(-1deg) translateY(-12px); }
+        .news-card[data-curve="4"] { transform: rotateX(-2deg) rotateY(0deg) translateY(-16px); }
+        .news-card[data-curve="5"] { transform: rotateX(-2deg) rotateY(1deg) translateY(-20px); }
+        .news-card[data-curve="6"] { transform: rotateX(-1deg) rotateY(2deg) translateY(-24px); }
+
+        /* АКТИВНАЯ КАРТОЧКА (В ЦЕНТРЕ) */
+        .news-card.active {
             border-left: 4px solid #007acc;
-            box-shadow: 0 12px 20px rgba(0,0,0,0.08);
+            transform: scale(1.02) rotateX(0deg) rotateY(0deg);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.15);
+            background: #ffffff;
+            z-index: 10;
         }
 
         .news-date {
@@ -80,14 +96,6 @@
             display: block;
             margin-bottom: 0.5rem;
             font-size: 0.85rem;
-        }
-
-        /* АКТИВНАЯ НОВОСТЬ (В ЦЕНТРЕ) */
-        .news-item.active {
-            border-left: 4px solid #007acc;
-            background: #fdfdfd;
-            transform: scale(1.01);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
         }
 
         /* ПРАВАЯ КОЛОНКА */
@@ -148,7 +156,6 @@
             color: #007acc;
             text-decoration: none;
         }
-
         a:hover {
             text-decoration: underline;
         }
@@ -202,7 +209,7 @@
             position: fixed;
             top: 24px;
             left: 24px;
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(255,255,255,0.8);
             backdrop-filter: blur(4px);
             border: none;
             border-radius: 40px;
@@ -241,34 +248,36 @@
 </div>
 
 <div class="container">
-    <!-- ЛЕВАЯ КОЛОНКА: НОВОСТНАЯ ЛЕНТА -->
-    <div class="news-ribbon" id="newsRibbon">
-        <div class="news-item">
-            <span class="news-date">🕶️ «Не смотри в будущее, Декстер.»</span>
-        </div>
-        <div class="news-item">
-            <span class="news-date">Планы</span>
-            Дорожная карта, первый ISO.
-        </div>
-        <div class="news-item">
-            <span class="news-date">Скоро</span>
-            Альфа-версия терминала.
-        </div>
-        <div class="news-item">
-            <span class="news-date">2026-05-23</span>
-            Сайт обновлён: добавлена 3D-лента новостей с прокруткой.
-        </div>
-        <div class="news-item">
-            <span class="news-date">2026-05-23</span>
-            Создан официальный сайт CORE/713. Добавлены форум и документация.
-        </div>
-        <div class="news-item">
-            <span class="news-date">2026-05-22</span>
-            Проект CORE/713 официально запущен. Лицензия Apache 2.0.
-        </div>
-        <div class="news-item">
-            <span class="news-date">Архив</span>
-            Основан репозиторий. Начало разработки.
+    <!-- ИЗОГНУТАЯ ЛЕНТА -->
+    <div class="curved-ribbon" id="curvedRibbon">
+        <div class="ribbon-curve" id="ribbonCurve">
+            <div class="news-card" data-curve="0">
+                <span class="news-date">🕶️ «Не смотри в будущее, Декстер.»</span>
+            </div>
+            <div class="news-card" data-curve="1">
+                <span class="news-date">Планы</span>
+                Дорожная карта, первый ISO.
+            </div>
+            <div class="news-card" data-curve="2">
+                <span class="news-date">Скоро</span>
+                Альфа-версия терминала.
+            </div>
+            <div class="news-card" data-curve="3">
+                <span class="news-date">2026-05-23</span>
+                Сайт обновлён: добавлена 3D-лента новостей с прокруткой.
+            </div>
+            <div class="news-card" data-curve="4">
+                <span class="news-date">2026-05-23</span>
+                Создан официальный сайт CORE/713. Добавлены форум и документация.
+            </div>
+            <div class="news-card" data-curve="5">
+                <span class="news-date">2026-05-22</span>
+                Проект CORE/713 официально запущен. Лицензия Apache 2.0.
+            </div>
+            <div class="news-card" data-curve="6">
+                <span class="news-date">Архив</span>
+                Основан репозиторий. Начало разработки.
+            </div>
         </div>
     </div>
 
@@ -289,41 +298,38 @@
 </div>
 
 <script>
-    // 1. ПОДСВЕТКА АКТИВНОЙ НОВОСТИ (В ЦЕНТРЕ ЭКРАНА)
-    const ribbon = document.getElementById('newsRibbon');
-    const items = document.querySelectorAll('.news-item');
+    // АКТИВНЫЙ ЭЛЕМЕНТ ПРИ ПРОКРУТКЕ (ЦЕНТР)
+    const ribbonContainer = document.getElementById('curvedRibbon');
+    const cards = document.querySelectorAll('.news-card');
 
-    function highlightActiveNews() {
-        if (!ribbon) return;
-        const containerRect = ribbon.getBoundingClientRect();
+    function updateActiveCard() {
+        if (!ribbonContainer) return;
+        const containerRect = ribbonContainer.getBoundingClientRect();
         const containerCenter = containerRect.top + containerRect.height / 2;
-
-        let closestItem = null;
-        let minDistance = Infinity;
-
-        items.forEach(item => {
-            const rect = item.getBoundingClientRect();
-            const itemCenter = rect.top + rect.height / 2;
-            const distance = Math.abs(containerCenter - itemCenter);
-            if (distance < minDistance) {
-                minDistance = distance;
-                closestItem = item;
+        let closest = null;
+        let minDist = Infinity;
+        cards.forEach(card => {
+            const rect = card.getBoundingClientRect();
+            const cardCenter = rect.top + rect.height / 2;
+            const dist = Math.abs(containerCenter - cardCenter);
+            if (dist < minDist) {
+                minDist = dist;
+                closest = card;
             }
         });
-
-        items.forEach(item => item.classList.remove('active'));
-        if (closestItem) closestItem.classList.add('active');
+        cards.forEach(c => c.classList.remove('active'));
+        if (closest) closest.classList.add('active');
     }
 
-    if (ribbon) {
-        ribbon.addEventListener('scroll', highlightActiveNews);
-        window.addEventListener('resize', highlightActiveNews);
-        highlightActiveNews();
+    if (ribbonContainer) {
+        ribbonContainer.addEventListener('scroll', updateActiveCard);
+        window.addEventListener('resize', updateActiveCard);
+        updateActiveCard();
     }
 </script>
 
 <script>
-    // 2. МЕНЮ (БЕЗ ИЗМЕНЕНИЙ)
+    // МЕНЮ
     const menuBtn = document.getElementById('menuBtn');
     const sidebar = document.getElementById('sidebar');
     if (menuBtn && sidebar) {
@@ -337,5 +343,6 @@
         });
     }
 </script>
+
 </body>
 </html>
