@@ -162,6 +162,59 @@
             text-decoration: underline;
         }
 
+        /* Тёмная тема */
+        body.dark {
+            background: #121212;
+            color: #ddd;
+        }
+        body.dark .ribbon-item {
+            background: #2a2a2a;
+            color: #ccc;
+        }
+        body.dark .item-2 {
+            background: #1e1e1e;
+            color: white;
+            border-left-color: #66b0ff;
+        }
+        body.dark h1 {
+            background: linear-gradient(135deg, #ffffff, #66b0ff);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        body.dark .status {
+            color: #aaa;
+            border-left-color: #66b0ff;
+        }
+        body.dark .forum-button {
+            background: #0f5b9c;
+        }
+        body.dark .sidebar {
+            background: #1e1e1e;
+            border-right-color: #333;
+        }
+        body.dark .sidebar a {
+            color: #ddd;
+        }
+        body.dark .menu-btn {
+            background: #2c2c2c;
+            color: white;
+        }
+        body.dark footer,
+        body.dark hr {
+            border-color: #333;
+        }
+        body.dark .item-0,
+        body.dark .item-1,
+        body.dark .item-3,
+        body.dark .item-4 {
+            background: #2a2a2a;
+        }
+        body.dark .item-5 {
+            background: #1a1a1a;
+            color: #777;
+        }
+
         /* АДАПТАЦИЯ ДЛЯ МОБИЛЬНЫХ (лента становится списком) */
         @media (max-width: 750px) {
             .container {
@@ -257,6 +310,7 @@
             <a href="https://github.com/OS-AC713/os-core-713" target="_blank">Проект</a>
             <a href="https://github.com/OS-AC713/os-core-713/blob/main/Documintation%20Of%20Sy713.txt" target="_blank">Документация</a>
             <a href="https://github.com/OS-AC713/os-core-713/discussions" target="_blank">Форум</a>
+            <a href="#" id="theme-toggle-link">Переключить тему</a>
             <a href="https://github.com/OS-AC713/os-core-713/discussions/new?category=bug" target="_blank">Пожаловаться на баг</a>
         </nav>
     </div>
@@ -325,6 +379,19 @@
                 sidebar.classList.remove('open');
             }
         });
+
+        // Переключение темы
+        const themeLink = document.getElementById('theme-toggle-link');
+        if (themeLink) {
+            themeLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                document.body.classList.toggle('dark');
+                localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+            });
+        }
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark');
+        }
     </script>
 </body>
 </html>
