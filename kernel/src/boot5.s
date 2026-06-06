@@ -1,6 +1,6 @@
 .code16
 .section .text
-.globl _start
+.global _start
 
 _start:
     mov $0x07C0, %ax
@@ -14,6 +14,7 @@ _start:
     mov %ax, %es
 
     /* Строка 0: "core/713 installer" */
+    /* Line 0: “core/713 installer” */
     movb $'c', %es:0
     movb $0x07, %es:1
     movb $'o', %es:2
@@ -52,6 +53,7 @@ _start:
     movb $0x07, %es:35
 
     /* Строка 2: приглашение "<>& " (строка 2 начинается с 160-го байта) */
+    /* Line 2: invitation “<>& ” (line 2 starts at byte 160) */
     movb $'<', %es:160
     movb $0x07, %es:161
     movb $'>', %es:162
@@ -62,9 +64,11 @@ _start:
     movb $0x07, %es:167
 
     /* Позиция для ввода (следующий символ после "<>& ") */
+    /* Input position (the character following “<>& ”) */
     mov $168, %bp
 
     /* Включаем аппаратный курсор */
+    /* Enable the hardware cursor */
     mov $0x0100, %cx
     mov $0x0203, %dx
     mov $0x01, %ah
@@ -78,6 +82,7 @@ read_loop:
     je newline
 
     /* Выводим символ на текущей позиции ввода */
+    /* Print the character at the current input position */
     mov %al, %es:(%bp)
     movb $0x07, %es:1(%bp)
     add $2, %bp
@@ -85,6 +90,7 @@ read_loop:
 
 newline:
     /* Переход на новую строку */
+    /* New line */
     mov $160, %ax
     add %bp, %ax
     and $0xFFE0, %ax
@@ -92,6 +98,7 @@ newline:
     mov %ax, %bp
 
     /* Выводим приглашение на новой строке */
+    /* Display the invitation on a new line */
     movb $'<', %es:(%bp)
     movb $0x07, %es:1(%bp)
     movb $'>', %es:2(%bp)
