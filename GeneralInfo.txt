@@ -1,0 +1,53 @@
+Hello, I am MM8 (MrMagoo8888 or magoo@magoo32.com), I will try to explain changes below:
+
+What I have done:
+    - Moved website things to website/ folder
+    - Added .css and .js to clean up code and fix errors
+    
+    - Moved OS code into kernel/src to clean code
+    - Added makefile to compile files
+    - Added run.sh to run qemu
+    - (It works so far so good)
+
+    To use make:
+        - In terminal on linux system running "make" will compile the .s or .asm into the build/ dir
+        - Runing ./run.sh will boot the .bin in qemu
+        - You need to use chmod +x ./run.sh to make it work for the first time
+
+    - Please note:
+        - I use NASM not GCC so I am going to probs make a few mistakes later on 
+        - It would help for me to know your setup (Operating system, compiler, etc.)
+        - I am also not great at git but I am getting better over the past year
+
+I am very glad to help if needed :>
+
+
+
+
+
+
+RUS:
+
+Здравствуйте, я MM8 (MrMagoo8888 или magoo@magoo32.com), ниже я постараюсь объяснить внесенные изменения:
+
+Что я сделал:
+    - Переместил файлы сайта в папку website/
+    - Добавил .css и .js для очистки кода и исправления ошибок
+    
+    - Переместил код ОС в kernel/src для очистки кода
+    - Добавил makefile для компиляции файлов
+    - Добавил run.sh для запуска qemu
+    - (Пока что все работает нормально)
+
+     Чтобы использовать make:
+        - В терминале в системе Linux выполнение команды «make» приведет к компиляции файлов .s или .asm в каталог build/
+        - Выполнение команды ./run.sh запустит файл .bin в QEMU
+        - Чтобы запустить программу в первый раз, необходимо выполнить команду chmod +x ./run.sh
+
+    - Обратите внимание:
+        - Я использую NASM, а не GCC, поэтому, скорее всего, позже я допущу несколько ошибок 
+        - Мне было бы полезно знать вашу конфигурацию (операционная система, компилятор и т. д.)
+        - Я также не очень хорошо разбираюсь в git, но за последний год я стал лучше
+
+Я буду очень рад помочь, если понадобится :>
+

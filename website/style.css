@@ -1,0 +1,249 @@
+/* magoo@magoo32.com - 2024-06-01 */
+/* I have tried to use RUS comments but please excuse bad translation */
+/* Я постарался использовать комментарии на русском языке, но прошу прощения за некачественный перевод */
+
+/* ГЛОБАЛЬНЫЕ СТИЛИ / GLOBAL RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #faf9f8;
+    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+    color: #1a1a1a;
+    line-height: 1.5;
+    overflow-x: hidden;
+    transition: background 0.3s, color 0.3s;
+}
+
+/* УПРАВЛЕНИЕ ИНТЕРФЕЙСОМ / UI CONTROLS */
+.controls {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    display: flex;
+    gap: 0.5rem;
+    z-index: 1100;
+}
+.menu-btn, .theme-btn {
+    background: #1e1e1e;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: opacity 0.2s;
+}
+.menu-btn:hover, .theme-btn:hover {
+    opacity: 0.9;
+}
+
+/* ДВЕ КОЛОНКИ / TWO-COLUMN GRID LAYOUT */
+.container {
+    display: flex;
+    max-width: 1200px;
+    margin: 5rem auto 2rem;
+    gap: 2rem;
+    padding: 0 2rem;
+}
+
+/* ЛЕВАЯ КОЛОНКА — ИЗОГНУТАЯ ЛЕНТА 3D / 3D RIBBON STYLING */
+.news-ribbon {
+    flex: 1.2;
+    perspective: 800px;
+    height: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.ribbon {
+    width: 100%;
+    height: 400px;
+    position: relative;
+    transform-style: preserve-3d;
+    transform: rotateX(5deg) rotateY(-5deg);
+}
+.ribbon-item {
+    position: absolute;
+    width: 90%;
+    left: 5%;
+    background: white;
+    padding: 1.2rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    backdrop-filter: blur(4px);
+}
+.news-date {
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: #007acc;
+    margin-bottom: 0.25rem;
+}
+
+/* Позиционирование элементов на изогнутой ленте / 3D Ribbon depth map */
+.item-0 { bottom: 5%; opacity: 0.2; transform: translateZ(-50px) scale(0.88); }
+.item-1 { bottom: 22%; opacity: 0.6; transform: translateZ(-25px) scale(0.94); }
+.item-2 { bottom: 40%; opacity: 1; transform: translateZ(0px) scale(1); border-left: 4px solid #007acc; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+.item-3 { bottom: 58%; opacity: 0.7; transform: translateZ(-20px) scale(0.95); }
+.item-4 { bottom: 74%; opacity: 0.4; transform: translateZ(-40px) scale(0.90); }
+.item-5 { bottom: 90%; opacity: 0.15; transform: translateZ(-60px) scale(0.85); }
+
+/* ПРАВАЯ КОЛОНКА (ОСНОВНОЙ КОНТЕНТ) / MAIN SECTION CONTENT */
+.main-content {
+    flex: 2;
+}
+h1 {
+    font-size: 2.8rem;
+    font-weight: 500;
+    letter-spacing: -0.5px;
+    background: linear-gradient(135deg, #1e1e1e, #007acc);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    margin-bottom: 0.5rem;
+}
+.status {
+    font-size: 1rem;
+    color: #4a4a4a;
+    margin-bottom: 2rem;
+    border-left: 3px solid #007acc;
+    padding-left: 1rem;
+}
+.forum-button {
+    display: inline-block;
+    background: #007acc;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 40px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 12px rgba(0,122,204,0.3);
+    margin: 1rem 0;
+}
+.forum-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,122,204,0.4);
+}
+hr {
+    margin: 2rem 0 1.5rem;
+    border: none;
+    border-top: 1px solid #e2e2e2;
+}
+footer {
+    font-size: 0.8rem;
+    color: #777;
+}
+a {
+    color: #007acc;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+/* БОКОВОЕ МЕНЮ / SIDEBAR STYLING */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -300px;
+    width: 280px;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(8px);
+    border-right: 1px solid rgba(0,0,0,0.05);
+    transition: left 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    z-index: 1000;
+    padding: 5rem 1.5rem 2rem;
+}
+.sidebar.open {
+    left: 0;
+}
+.sidebar h3 {
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-bottom: 2rem;
+    color: #007acc;
+}
+.sidebar nav {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+.sidebar a {
+    color: #1e1e1e;
+    font-size: 1.05rem;
+}
+
+/* ТЁМНАЯ ТЕМА / DARK THEME OVERRIDES */
+body.dark {
+    background: #121212;
+    color: #ddd;
+}
+body.dark .menu-btn, body.dark .theme-btn {
+    background: #ffffff;
+    color: #121212;
+}
+body.dark .sidebar {
+    background: rgba(30, 30, 30, 0.96);
+    border-right-color: #2a2a2a;
+}
+body.dark .sidebar a {
+    color: #ddd;
+}
+body.dark .ribbon-item {
+    background: #1e1e1e;
+    color: #ccc;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+body.dark .item-2 {
+    background: #252526;
+    color: white;
+    border-left-color: #66b0ff;
+}
+body.dark h1 {
+    background: linear-gradient(135deg, #ffffff, #66b0ff);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+}
+body.dark .status {
+    color: #aaa;
+    border-left-color: #66b0ff;
+}
+body.dark .forum-button {
+    background: #0f5b9c;
+    box-shadow: 0 4px 12px rgba(15,91,156,0.4);
+}
+body.dark hr {
+    border-color: #2a2a2a;
+}
+
+/* АДАПТАЦИЯ ДЛЯ МОБИЛЬНЫХ / MOBILE RESPONSIVE MEDIA QUERY */
+@media (max-width: 750px) {
+    .container {
+        flex-direction: column;
+        margin-top: 5rem;
+    }
+    .news-ribbon {
+        height: auto;
+        perspective: none;
+    }
+    .ribbon {
+        transform: none;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    .ribbon-item {
+        position: static;
+        opacity: 1 !important;
+        transform: none !important;
+        width: 100%;
+    }
+}
